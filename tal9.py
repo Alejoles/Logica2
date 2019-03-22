@@ -65,6 +65,7 @@ def StringtoTree(A, letrasProposicionales):
             pila.append(formulaAux)
     return pila[-1]
 
+#-----------------------------------------------------------------------------
 
 def Par_Complementario(ListaC):
 	#ListaC es una lista de Arboles
@@ -72,8 +73,8 @@ def Par_Complementario(ListaC):
 		for j in range (i+1,len(ListaC)):
 			II = ListaC[i]
 			JJ = ListaC[j]
-			print("1: " + Inorder(II))
-			print('2: ' + Inorder(JJ))
+			#print("1: " + Inorder(II))
+			#print('2: ' + Inorder(JJ))
 			if(JJ.label == '-'):
 				if (JJ.right.label == II.label):
 					return 0
@@ -98,28 +99,48 @@ def Ver_Formula(H):
 	#H lista de formulas, verificar si hay alguna formula que no es literal
 	for i in range(len(H)):
 		if(Ver_Lit(H[i]) == 0):
-			return 1
-		else:
 			return 0
-	
-
+	return 1
 		
+			
 P = StringtoTree('p', letrasProposicionales)
 Q = StringtoTree('q', letrasProposicionales)
 noQ = StringtoTree('q-', letrasProposicionales)
 B = StringtoTree('qpO-', letrasProposicionales)
 C = StringtoTree('p-qYpY', letrasProposicionales)
-#t = [[Q, A], [B, P]]
-F = [P,Q]
-#H = [A,B]
-PRR = [C]
+t = [[Q, P], [Q, P]]
+F = [[P,Q], [P], [Q]]
 
-#print(imprime_hoja(F))
-
-print(Par_Complementario(PRR))
-print(Ver_Lit(B))
-print(Ver_Formula(F))
+ListaForms = F
 
 
+#Lista de listas de formulas
+
+while(len(ListaForms) != 0):
+	h = ListaForms[0]			
+	if(Ver_Formula(h) == 1):
+		if(Par_Complementario(h) == 1):
+			print(imprime_hoja(h) + "cerrada")	
+		else:
+			print(imprime_hoja(h) + "abierta")
+	else:
+		for i in h:
+			if(Ver_Lit(i) == 1):
+				print(Inorder(i))
+				break
+	del(ListaForms[0])
 
 
+
+'''
+	for i in h:
+		if(Ver_Lit(i) == 0):# cambiar esto por --¿i contiene sólo literales?--
+			if(Par_Complementario(h) == 0):
+				print(imprime_hoja(h)+"]")
+			else:
+				print(imprime_hoja(h)+"[")
+		else:
+			if(Ver_Lit(i) == 0):
+				print(h)
+	ListaForms.pop(h)
+'''
