@@ -67,37 +67,29 @@ def String2Tree(A, LetrasProposicionales):
 #-----------------------------------------------------------------------------------
 #		Definimos los literales que necesitamos para el problema REGLA 1
 
-R1 = "P-M>"
-R2 = "M-P>"
+R1 = "P-M>" + "M-P>" + "Y"
+R2 = "Q-N>" + "N-Q>" + "Y"
 R= R1 + R2 + "Y"
 
-#REGLA2
-'''
-arr = []
-def regla2(recolector, contador):
-	if(contador == 0):
-		print(recolector)
-		arr.append(recolector)
-	else:
-		AUX = LetrasProposicionales[0:6]
-		for i in AUX:
-			if(contador!=1):
-				regla2(recolector+i, contador-1)
-			else: 
-				if(len(recolector)>=3):
-					if(not((recolector[0] + recolector[1])==i)):
-						regla2(recolector+i, contador-1)		
-				else:		
-					if(not(recolector[0] == i)):
-						regla2(recolector+i+"Y", contador-1)
-						
-'''	
-
-for A in LetrasProposicionales:
-	Aux1 = [x for x in LetrasProposicionales if x!=A] #todas las LetProp excepto p
-	for B in Aux1:
-		Literal = B + A + 'Y'
-		Aux2 = [x + '-' for x in Aux1 if x!=B]
+#REGLA2 LOGICA1 EXACTAMENTE 2 SESIONES
+for Z in LetrasProposicionales:
+	Aux1 = [x for x in LetrasProposicionales if x!=Z] #todas las LetProp excepto A
+	for W in Aux1:
+		Literal = Z + W + 'Y'
+		Aux2 = [x + '-' for x in Aux1 if x!=W]
+		for k in Aux2:
+			Literal = k + Literal + 'Y'
+			if Inicial:
+				Conjunciones = Literal
+				Inicial = False
+			else:
+				Conjunciones = Literal + Conjunciones + 'O'
+				
+for U in LetrasProposicionales:
+	Aux1 = [x for x in LetrasProposicionales if x!=U] #todas las LetProp excepto A
+	for V in Aux1:
+		Literal = V + U + 'Y'
+		Aux2 = [x + '-' for x in Aux1 if x!=V]
 		for k in Aux2:
 			Literal = k + Literal + 'Y'
 			if Inicial:
@@ -112,17 +104,25 @@ for A in LetrasProposicionales:
 #--------------------------------------------------------------------------------
 #REGLA3
 
-K1 = "D-A>"
-K2 = "E-B>"
-K3 = "F-C>"
-K = K1 + K2 + K3 + "Y" + "Y"
+K1 = "D-A>" + "G-A>" + "J-A>" + "Y" + "Y"
+K11 = "A-D>" + "G-D>" + "J-D>" + K1 + "Y" + "Y" + "Y"
+K2 = "E-B>" + "H-B>" + "K-B>" + "Y" + "Y"
+K22 = "B-E>" + "H-E>" + "K-E>" + K2 + "Y" + "Y" + "Y"
+K3 = "F-C>" + "I-C>" + "L-C>" + "Y" + "Y"
+K33 = "C-F>" + "I-F>" + "L-F>" + K3 + "Y" + "Y" + "Y"
+K4 = "J-G>" + "A-G>" + "D-G>" + "Y" + "Y"
+K44 = "G-J>" + "D-J>" + "A-J>" + K4 + "Y" + "Y" + "Y"
+K5 = "K-H>" + "E-H>" + "B-H>" + "Y" + "Y"
+K55 = "H-K>" + "E-K>" + "B-K>" + K5 + "Y" + "Y" + "Y"
+K6 = "L-I>" + "F-I>" + "C-I>" + "Y" + "Y"
+K66 = "I-L>" + "F-L>" + "C-L>" + K6 + "Y" + "Y" + "Y"
+K = K11 + K22 + K33 + K44 + K55 + K66 + "Y" + "Y" + "Y" + "Y" + "Y"
 #----------------------------------------------------------------------------------
 #REGLA4
 
-J1 = "B-N>"
-J2 = "D-N>"
-J3 = "F-N>"
-J = J1 + J2 + J3 + "Y" + "Y"
+J1 = "FLODJOO-NMO>"
+J2 = "HEOFLOO-PQO>"
+J = J1 + J2 + "Y"
 
 
 #-----------------------------------------------------------------------------------
@@ -151,9 +151,9 @@ for a in LetrasProposicionales:
 #		Acá determinamos el valor de verdad de los literales en la conjuncion
 RRR = R + J + K + "Y" + "Y"
 
-Arbol = String2Tree(RRR, LetrasProposicionales)
+A = String2Tree(RRR, LetrasProposicionales)
 for j in interps:
-	if(VI(Arbol,j) == 1):
+	if(VI(A,j) == 1):
 		listainterpsverdad.append(j)
 
 print(len(listainterpsverdad))

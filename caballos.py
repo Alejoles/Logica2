@@ -144,16 +144,25 @@ def VI(A,i):
 
 # Vamos a crear las formulas en notacion polaca inversa
 
-A1 = "8-6-Y1>"
-A2 = "9-7-Y2>"
-A3 = "8-4-Y3>"
-A4 = "9-3-Y4>"
-A6 = "7-1-Y6>"
-A7 = "6-2-Y7>"
-A8 = "3-1-Y8>"
-A9 = "4-2-Y9>"
+A1 = "8-1>"
+A11 = "6-1>" + A1 + "Y"
+A2 = "9-2>"
+A22 = "7-2>" + A2 + "Y"
+A3 = "8-3>"
+A33 = "4-3>" + A3 + "Y"
+A4 = "9-4>"
+A44 = "3-4>" + A4 + "Y"
+A6 = "7-6>"
+A66 = "1-6>" + A6 + "Y"
+A7 = "6-7>"
+A77 = "2-7>" + A7 + "Y"
+A8 = "3-8>"
+A88 = "1-8>" + A8 + "Y"
+A9 = "4-9>"
+A99 = "2-9>" + A9 + "Y"
 
 A = "8-6-Y1>9-7-Y2>Y8-4-Y3>Y9-3-Y4>Y7-1-Y6>Y6-2-Y7>Y3-1-Y8>Y4-2-Y9>Y"
+A = A11 + A22 + A33 + A44 + A66 + A77 + A88 + A99 + "Y" + "Y" + "Y" + "Y" + "Y" + "Y" + "Y"
 
 
 A = A + "2" + "6" + "Y" + "Y"
@@ -189,12 +198,12 @@ for p in LetrasProposicionales:
 			Literal = r + q + p + 'Y' + 'Y'
 			Aux3 = [x + '-' for x in Aux2 if x!=r]
 			for k in Aux3:
-				Literal = k + Literal + 'Y'
+				Literal = k + Literal + 'O'
 			if Inicial:
 				Conjunciones = Literal
 				Inicial = False
 			else:
-				Conjunciones = Literal + Conjunciones + 'O'
+				Conjunciones = Literal + Conjunciones + 'Y'
 
 
 
@@ -233,6 +242,7 @@ cont = 1
 for j in interps:
 	if(VI(Arbol,j) == 1):
 		listainterpsverdad.append(j)
+		print(len(listainterpsverdad))
 		dibujar_tablero(j,cont)
 		cont += 1
 

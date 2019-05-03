@@ -1,6 +1,8 @@
 #Lista de hojas de un arbol
 #Si cada hoja se ve en sí misma como una lista de formulas se desarrolla el algoritmo de construccion de tableaux es una lista de listas de formulas
 
+from random import choice
+
 ListaLiterales = []
 letrasProposicionales = ['p', 'q']
 
@@ -21,7 +23,7 @@ def Inorder(f):
 	else:
 		return "(" + Inorder(f.left) + f.label + Inorder(f.right) + ")"
 
-def imprime_hoja(H):
+def imprime_hoja(H): #Lista de formulas
 	cadena = "["
 	primero = True
 	for f in H:
@@ -33,7 +35,7 @@ def imprime_hoja(H):
 	return cadena + "]"
 
 
-def imprime_tableau(tableau):
+def imprime_tableau(tableau): #Lista de listas de formulas
 	primero = True
 	for H in tableau:
 		if primero == True:
@@ -66,33 +68,30 @@ def StringtoTree(A, letrasProposicionales):
     return pila[-1]
 
 
-def Par_Complementario(ListaC):
-	#ListaC es una lista de Arboles
-	for i in range(len(ListaC)):
-		for j in range (i+1,len(ListaC)):
-			II = ListaC[i]
-			JJ = ListaC[j]
-			print("1: " + Inorder(II))
-			print('2: ' + Inorder(JJ))
-			if(JJ.label == '-'):
-				if (JJ.right.label == II.label):
-					return 0
-			elif(II.label == '-'):
-				if(II.right.label == JJ.label):
-					return 0
-	return 1
+def Par_Complementario(Lista):
+	#Lista es una lista de literales
+	for i in range(len(Lista)):
+		a = Inorder(Lista[i])
+		for j in range(i+1,len(Lista)):
+			b = Inorder(Lista[j])
+			print("primera lista: " + a)
+			print(b)
+			if('-' + a == b):
+				return 1
+				break
+			elif(a == '-'+b):
+				return 1
+	return 0
+		
 	
 def Ver_Lit(A):
 	#A es una formula, chequeamos si A es un literal
 	if(A.label in letrasProposicionales):
-		return 0
-	elif(A.label == '-'):
-		if(A.right.label in letrasProposicionales):
-			return 0
-		else:
-			return 1
-	else:
 		return 1
+	elif(A.label == '-'):
+		return Ver_Lit(A.right)
+	else:
+		return 0
 
 def Ver_Formula(H):
 	#H lista de formulas, verificar si hay alguna formula que no es literal
@@ -101,24 +100,76 @@ def Ver_Formula(H):
 			return 1
 		else:
 			return 0
+			
 	
+def interps_verd(H): #
+	#H Lista de listas de literales que devuelve una lista llamada listaInterpsVerdad con las listas en h que no tienen pares complementarios
+
+	
+
+#---------------------------------------------------------------------------
+#----------------------------PARAMETROS NECESARIOS-------------------------
+
 
 		
 P = StringtoTree('p', letrasProposicionales)
 Q = StringtoTree('q', letrasProposicionales)
 noQ = StringtoTree('q-', letrasProposicionales)
+noP = StringtoTree('p-', letrasProposicionales)
 B = StringtoTree('qpO-', letrasProposicionales)
 C = StringtoTree('p-qYpY', letrasProposicionales)
-#t = [[Q, A], [B, P]]
-F = [P,Q]
-#H = [A,B]
-PRR = [C]
+PRR = [B, C]
+	
 
-#print(imprime_hoja(F))
+T = [[Q,P], [B,C], [P, noP]]
 
-print(Par_Complementario(PRR))
-print(Ver_Lit(B))
-print(Ver_Formula(F))
+#---------------------------EJECUCION------------------------------------
+
+
+while(len(T) != 0):
+	#T Lista de listas de formulas
+	for i in T:
+		
+		if(Ver_Formula(i) == 0): #contiene solo literales?
+			if(Par_Complementario(i) == 1):
+				print(imprime_hoja(i))
+				print("Cerrada")
+				T.remove(i)
+			elif(Par_Complementario(i) == 0):
+				print(imprime_hoja(i))
+				print("Abierta")
+				T.remove(i)
+		else: #solo literales
+			if(Ver_Formula(i) == 1):
+				print(imprime_hoja(i))
+				T.remove(i)
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
