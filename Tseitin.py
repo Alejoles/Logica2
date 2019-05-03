@@ -15,7 +15,7 @@ def Tseitin(A, LetrasProposicionalesA):
 			Atomo = LetrasProposicionalesB[I]
 			Pila = Pila[:-1]
 			Pila.append(Atomo)
-			L.append(Atomo + '<->' + '-' + 's')
+			L.append('(' + Atomo + '<->' + '-' + s +')')
 			A = A[1:]
 			if(len(A)>0):
 				s = A[0]
@@ -46,7 +46,7 @@ def Tseitin(A, LetrasProposicionalesA):
 	return B
 			
 LetrasProposicionalesA = ['p','q','r']
-A = 'pY(-qYr)'
+A = 'pY(-qY-r)'
 
 print(Tseitin(A, LetrasProposicionalesA))
 
