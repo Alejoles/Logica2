@@ -8,7 +8,7 @@ def Tseitin(A, LetrasProposicionalesA):
 	I = -1
 	s = A[0]
 	while(len(A)>0):
-		if(s in LetrasProposicionalesA and Pila[-1] == '-'):
+		if(s in LetrasProposicionalesA and len(Pila)>0 and Pila[-1] == '-'):
 			I+=1
 			Atomo = LetrasProposicionalesB[I]
 			Pila = Pila[:-1]
