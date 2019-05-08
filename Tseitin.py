@@ -1,59 +1,35 @@
 
-<<<<<<< HEAD
 
 
-def Tseitin(A, LetrasProposicionalesA):
-=======
 # '>' + '(' +v + O + w + ')' + 'Y' + '(' + v+O+w + ')' + '>' + Atomo
 
 def Tseitin(A, LetrasProposicionalesA):
 	#A una formula no tiene dobles negaciones, cadena de simbolos, y sus letras proposicionales estan en la lista letraspropA
-#'>' + '-' + s + 'Y' + '-' + s + '>' + Atomo
->>>>>>> df27d18365aa5a0b8ec0220bfa323681d6b596d9
+#'>' + '-' + s + 'Y' + '-' + s + '>' + Atomo 
 	LetrasProposicionalesB = [str(x) for x in range(1,100)]
 	L = [] # Conjunciones
 	Pila = []
 	I = -1
 	s = A[0]
 	while(len(A)>0):
-<<<<<<< HEAD
-		if(s in LetrasProposicionalesA and Pila[-1] == '-'):
-=======
 		if(s in LetrasProposicionalesA and len(Pila)>0 and Pila[-1] == '-'):
->>>>>>> df27d18365aa5a0b8ec0220bfa323681d6b596d9
 			I+=1
 			Atomo = LetrasProposicionalesB[I]
 			Pila = Pila[:-1]
 			Pila.append(Atomo)
-<<<<<<< HEAD
-			L.append(Atomo + '>' + '-' + s + 'Y' + '-' + s + '>' + Atomo)
-			A = A[:1]
-			s = A[0]
-=======
-			L.append('(' + Atomo + '<->' + '-' + s +')')
+			L.append('(' + '-' + Atomo + 'O' + '-' + s + 'Y' + s + 'O' + Atomo + ')')
+			#L.append('(' + Atomo + '<->' + '-' + s +')')
 			A = A[1:]
 			if(len(A)>0):
 				s = A[0]
->>>>>>> df27d18365aa5a0b8ec0220bfa323681d6b596d9
 		elif(s == ')'):
 			w = Pila[-1]
 			O = Pila[-2]
 			v = Pila[-3]
-<<<<<<< HEAD
-			Pila = Pila[len(Pila)-4]
-			I+=1
-			Atomo = LetrasProposicionalesB[I]
-			L.append(Atomo + '>' + (vOw) + 'Y' + (vOw) + '>' + Atomo)
-			s = Atomo
-		else:
-			Pila.append(s)
-			A = A[:1]
-			s = A[0]
-=======
 			Pila = Pila[:len(Pila)-4]
 			I+=1
 			Atomo = LetrasProposicionalesB[I]
-			L.append('(' +Atomo + '<->' + '(' + v+O+w + ')' + ')')
+			L.append('(' + '-' + Atomo + 'O' + '(' + v+O+w + ')' + '-'  + '(' + v+O+w + ')' + Atomo + ')')
 			s = Atomo
 		else:
 			Pila.append(s)
@@ -61,7 +37,7 @@ def Tseitin(A, LetrasProposicionalesA):
 			if(len(A)>0):
 				s = A[0]
 
->>>>>>> df27d18365aa5a0b8ec0220bfa323681d6b596d9
+
 	B = ''
 	if(I<0):
 		Atomo = Pila[-1]
@@ -73,13 +49,10 @@ def Tseitin(A, LetrasProposicionalesA):
 	B = Atomo + B
 	return B
 			
-<<<<<<< HEAD
-LetrasProposicionalesA = ['p']
-A = 'p'
-=======
-LetrasProposicionalesA = ['p','q','r']
-A = 'pY(-qY-r)'
->>>>>>> df27d18365aa5a0b8ec0220bfa323681d6b596d9
+LetrasProposicionalesA = ['p','q']
+A = '(pYq)'
+
+
 
 print(Tseitin(A, LetrasProposicionalesA))
 
@@ -115,7 +88,6 @@ def ObtClausal(A):
 			
 
 
-<<<<<<< HEAD
 """
 a = 'pOqY--aOb->kOl'
 
@@ -128,5 +100,4 @@ negacion(a)
 print(negacion(a))
 
 """
-=======
->>>>>>> df27d18365aa5a0b8ec0220bfa323681d6b596d9
+
