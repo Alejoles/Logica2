@@ -6,7 +6,10 @@
 def Tseitin(A, LetrasProposicionalesA):
 	#A una formula no tiene dobles negaciones, cadena de simbolos, y sus letras proposicionales estan en la lista letraspropA
 #'>' + '-' + s + 'Y' + '-' + s + '>' + Atomo 
-	LetrasProposicionalesB = [str(x) for x in range(1,100)]
+	
+	LetrasProposicionalesB = []
+	for i in range(0,100):
+		LetrasProposicionalesB.append('x')
 	L = [] # Conjunciones
 	Pila = []
 	I = -1
@@ -14,7 +17,7 @@ def Tseitin(A, LetrasProposicionalesA):
 	while(len(A)>0):
 		if(s in LetrasProposicionalesA and len(Pila)>0 and Pila[-1] == '-'):
 			I+=1
-			Atomo = LetrasProposicionalesB[I]
+			Atomo = LetrasProposicionalesB[I] + str(I)
 			Pila = Pila[:-1]
 			Pila.append(Atomo)
 			L.append('(' + '-' + Atomo + 'O' + '-' + s + 'Y' + s + 'O' + Atomo + ')')
@@ -28,8 +31,8 @@ def Tseitin(A, LetrasProposicionalesA):
 			v = Pila[-3]
 			Pila = Pila[:len(Pila)-4]
 			I+=1
-			Atomo = LetrasProposicionalesB[I]
-			L.append('(' + '-' + Atomo + 'O' + '(' + v+O+w + ')' + '-'  + '(' + v+O+w + ')' + Atomo + ')')
+			Atomo = LetrasProposicionalesB[I] + str(I)
+			L.append('(' + '-' + Atomo + 'O' + '(' + v+O+w + ')' + 'Y' + '-'  + '(' + v+O+w + ')' + 'O' + Atomo + ')')
 			s = Atomo
 		else:
 			Pila.append(s)
@@ -42,7 +45,7 @@ def Tseitin(A, LetrasProposicionalesA):
 	if(I<0):
 		Atomo = Pila[-1]
 	else:
-		Atomo = LetrasProposicionalesB[I]
+		Atomo = LetrasProposicionalesB[I] + str(I)
 	for X in L:
 		Y = X
 		B += 'Y' + Y

@@ -1,84 +1,105 @@
+def ClaUnitaria(U):
+	flag=False
+	posicion=-1
+	for a in range(len(U)):
+		if(len(U[a])==0): return (True,False,posicion)
+		elif(len(U[a])==1): 
+			flag=True
+			posicion=a
+	return (False,flag,posicion)
 
-def NoEmptyCl(S):
-        for i in S:
-                if(len(i)<1):
-                    return False
-        return True
-
-def ClausulaUni(S):
-    for i in S:
-            if (len(i)==1):
-                return i
-    return ''
-
-def LetraFromLit(L):
-    if(L[0] == '-'):
-        return L.replace('-', '')
-    else:
-        return L
+def ClaUnit(S):
+	for i in S:
+		if(len(i) == 1): return True
+	return False
 
 def Complemento(L):
-    if(L[0] == '-'):
-        return L.replace('-', '')
-    else:
-        return '-' + L
+	if(L[0] == '-'):
+		return L.replace('-','')
+	else:
+		return '-' + L
 
-def unitP(S,I):
-    #S, Conjunto de clausulas
-    #I, Interpretacion Parcial
-	l = ClausulaUni(S)
-	while(NoEmptyCl(S) and l!=''):
-		Unidad = l[0]
-		UnidadComp = Complemento(Unidad)
+def removeCl(S ,l):
+	S.remove(l)
+	if(len(l)>=1):
+		if(l[0] == '-'): L = l.replace('-','')
+		else: L = l[0]
 		for i in S:
-			if(Complemento(Unidad) in i):
-				i.remove(UnidadComp)
-			elif(Unidad in i):
-				S.remove(i)
-			I[LetraFromLit(Unidad)] = 1
-			#I[Complemento(Unidad)] = 0
+			if(L in i): S.remove(i)
+		
+	return S
+	
+def removeComp(S,L):
+	if(len(L)>=1):
+		l = L[0]
+		l = Complemento(l)
+		for i in S:
+			if(l in i):
+				i.remove(l)
+	return S
+		
 
-		l = ClausulaUni(S)
+def unitPropagate(S,I):
+	vacia,unitaria,posicion=ClaUnitaria(S)
+	while(vacia==False and ClaUnit(S)):
+		for i in S:
+			S=removeCl(S,i)
+			S=removeComp(S,i)
+			if(len(i)==0): return 'pailas',I
+			if(i[0] == '-'):
+				I[Complemento(i[0])] = 0
+			else:
+				I[i[0]] = 1
 	return S, I
 
-S = [['p','-q','r'], ['-p','q','-r'], ['-p', '-q', '-r']]
-I = {}
+
 
 
 def DPLL(S,I):
-    #S, Conjunto de clausulas
-    #I, Interpretacion parcial
-	unitP(S,I)
+	S,I=unitPropagate(S,I)
+	if(S == 'pailas'): return 'Insatisfacible' , '{}'
+	if(len(S) == 0):
+		return 'Satisfacible' , I
 	for i in S:
 		if(len(i) == 0):
-			return "Insatisfacible" , '{}'
-	if(len(S) == 0):
-		return "Satisfacible" , I
-	L = S[0][0]
-	SP = S
-	for i in SP:
-		if(L in i):
-			SP.remove(i)
-		elif(Complemento(L) in i):
-			i.remove(Complemento(L))
-	IP = I
-	IP[L] = 1
-	#IP[Complemento(L)] = 0
-	if(DPLL(SP,IP) == "Satisfacible" , IP):
-		return "Satisfacible" , IP
+			return 'Insatisfacible' , '{}'
+	L = S[0]
+	L = Complemento(Complemento(L[0]))
+	IP = I.copy()
+	if(L[0] == '-'):
+		IP[Complemento(L[0])] = 0
 	else:
-		SPP = S
-		LP = Complemento(L)
-		for i in SPP:
-			if(LP in i):
-				SPP.remove(i)
-			elif(Complemento(LP) in i):
-				i.remove(Complemento(LP))
-		IPP = I
-		IPP[LP] = 1
-		return DPLL(SPP,IPP)
+		IP[L[0]] = 1
+	SLOCO = S.copy()
+	SLOCO.append(L[0])
+	
+	sati,i=DPLL(SLOCO,IP)
+	if(sati == 'Satisfacible'):
+		return 'Satisfacible' , IP
+	else:
+		STAMAL = S.copy()
+		STAMAL.append(Complemento(L[0]))
+		IPP = I.copy()
+		if(L[0] == '-'):
+			IPP[Complemento(L[0])] = 1
+		else:
+			IPP[L[0]] = 0
+	return DPLL(STAMAL,IPP)
+
+
+
+S=[['p','-q','r'],['-p','q','-r'],['-p','-q','r'],['-p','-q','r']]
+I={}
+	
 
 
 
 
+
+
+
+
+		
+		
+	
 print(DPLL(S,I))
