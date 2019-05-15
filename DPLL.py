@@ -1,3 +1,7 @@
+
+
+
+
 def ClaUnitaria(U):
 	flag=False
 	posicion=-1
@@ -52,6 +56,17 @@ def unitPropagate(S,I):
 				I[i[0]] = 1
 	return S, I
 
+def literalDicc(D):
+	I = D.copy()
+	for i in I:
+		if(i[0] == '-'):
+			I.pop(i)
+			i = Complemento(i)
+			if(I.get(i) == 0):
+				I[i[0]] = 1
+			else:
+				I[i[0]] = 0
+	return I
 
 
 
@@ -59,7 +74,7 @@ def DPLL(S,I):
 	S,I=unitPropagate(S,I)
 	if(S == 'pailas'): return 'Insatisfacible' , '{}'
 	if(len(S) == 0):
-		return 'Satisfacible' , I
+		return 'Satisfacible' , literalDicc(I)
 	for i in S:
 		if(len(i) == 0):
 			return 'Insatisfacible' , '{}'
@@ -75,7 +90,7 @@ def DPLL(S,I):
 	
 	sati,i=DPLL(SLOCO,IP)
 	if(sati == 'Satisfacible'):
-		return 'Satisfacible' , IP
+		return 'Satisfacible' , literalDicc(IP)
 	else:
 		STAMAL = S.copy()
 		STAMAL.append(Complemento(L[0]))

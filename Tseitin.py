@@ -52,13 +52,6 @@ def Tseitin(A, LetrasProposicionalesA):
 	B = Atomo + B
 	return B
 			
-LetrasProposicionalesA = ['p','q']
-A = '(pYq)'
-
-
-
-print(Tseitin(A, LetrasProposicionalesA))
-
 
 def Tclausulas(C):
 	# C una clausula como lista de caracteres
@@ -74,21 +67,34 @@ def Tclausulas(C):
 		else:
 			L.append(s)
 			C = C[1:]
-		s = C[0]
+		if(len(C)>0):
+			s = C[0]
 	return L
 
 def ObtClausal(A):
 	#A, una formula en FNC como cadena de caracteres
-	l = []
+	L = []
 	i = 0
 	while(len(A)>0):
-		if(A[i] == 'Y'):
-			L.append(Tclausulas(A[:i]))
-			A = A[i+1:]
+		if(i <= len(A)):
+			if(A[i] == 'Y'):
+				L.append(Tclausulas(A[:i]))
+				A = A[i+1:]
+			else:
+				i+=1
 		else:
-			i+=1
+			break
 	return L
 			
+
+
+LetrasProposicionalesA = ['p','q']
+A = '(pYq)Y(pY-q)'
+
+
+
+print(ObtClausal(Tseitin(A, LetrasProposicionalesA)))
+
 
 
 """
